@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -61,6 +62,16 @@ public class ProdutoController {
 		if (service.findById(id)) {
 			service.atualizarProduto(id, form);
 			return ResponseEntity.ok(new ProdutoDto(id, form));
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	@DeleteMapping("/{id}")
+	@Transactional
+	public ResponseEntity<?> remover(@PathVariable Long id) {
+		if (service.findById(id)) {
+			service.deleteById(id);
+			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();
 	}

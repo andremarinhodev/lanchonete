@@ -40,5 +40,9 @@ public class ProdutoService {
 		}
 		return false;
 	}
+
+	public void deleteById(Long id) {
+		repository.deleteById(id);
+	}
 	
 }
