@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import br.com.andremarinhodev.lanchonete.controller.exception.EmptyFieldException;
+
 @RestControllerAdvice
 public class ErroDeValidacaoHandler {
 	
@@ -23,7 +25,8 @@ public class ErroDeValidacaoHandler {
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public List<ErroDeFormularioDto> handle(MethodArgumentNotValidException exception) {
 		List<ErroDeFormularioDto> dto = new ArrayList<>();
-		
+		System.out.println(exception.getParameter());
+		System.out.println(exception.getBindingResult());
 		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
 		fieldErrors.forEach(e -> {
 			String mensagem = messageSource.getMessage(e, LocaleContextHolder.getLocale());
@@ -34,4 +37,9 @@ public class ErroDeValidacaoHandler {
 		return dto;
 	}
 
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(EmptyFieldException.class)
+	public ErroDeFormularioDto handle(EmptyFieldException exception) {
+		return new ErroDeFormularioDto(exception.getMessage(), "não deve estar vazio");
+	}
 }
