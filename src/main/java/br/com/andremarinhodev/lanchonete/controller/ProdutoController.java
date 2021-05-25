@@ -2,6 +2,8 @@ package br.com.andremarinhodev.lanchonete.controller;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +36,7 @@ public class ProdutoController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ProdutoDto> cadastrar(@RequestBody ProdutoForm form, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<ProdutoDto> cadastrar(@RequestBody @Valid ProdutoForm form, UriComponentsBuilder uriBuilder) {
 		Produto produto = form.converter();
 		service.save(produto);
 		URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(produto.getId()).toUri();

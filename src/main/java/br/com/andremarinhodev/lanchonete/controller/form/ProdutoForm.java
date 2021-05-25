@@ -2,13 +2,21 @@ package br.com.andremarinhodev.lanchonete.controller.form;
 
 import java.math.BigDecimal;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import br.com.andremarinhodev.lanchonete.model.Produto;
 import br.com.andremarinhodev.lanchonete.model.enums.Classificacao;
 
 public class ProdutoForm {
 
+	@NotNull @NotEmpty
 	private String nome;
+	
+	@NotNull
 	private BigDecimal preco;
+	
+	@NotNull
 	private Classificacao classificacao;
 
 	public String getNome() {
