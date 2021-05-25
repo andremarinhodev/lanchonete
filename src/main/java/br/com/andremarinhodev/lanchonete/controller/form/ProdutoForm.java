@@ -47,4 +47,10 @@ public class ProdutoForm {
 		return new Produto(nome, preco, classificacao);
 	}
 
+	public void atualizar(Produto produto) {
+		produto.setNome(nome);
+		produto.setPreco(preco);
+		produto.setClassificacao(classificacao);
+	}
+
 }

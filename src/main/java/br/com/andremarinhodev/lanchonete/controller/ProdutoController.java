@@ -2,6 +2,7 @@ package br.com.andremarinhodev.lanchonete.controller;
 
 import java.net.URI;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,9 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,5 +44,14 @@ public class ProdutoController {
 		service.save(produto);
 		URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(produto.getId()).toUri();
 		return ResponseEntity.created(uri).body(new ProdutoDto(produto));
+	}
+	
+	@PutMapping("/{id}")
+	@Transactional
+	public ResponseEntity<ProdutoDto> atualizar(@PathVariable Long id, @RequestBody @Valid ProdutoForm form) {
+		if (service.atualizarProduto(id, form)) {
+			return ResponseEntity.ok(new ProdutoDto(id, form));
+		}
+		return ResponseEntity.notFound().build();
 	}
 }
