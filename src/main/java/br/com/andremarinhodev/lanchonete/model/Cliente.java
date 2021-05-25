@@ -15,8 +15,8 @@ public class Cliente extends Usuario{
 	public Cliente() {
 	}
 
-	public Cliente(LocalDate dataNascimento, String telefone) {
-		super();
+	public Cliente(String nome, String email, String senha, LocalDate dataNascimento, String telefone) {
+		super(nome, email, senha);
 		this.dataNascimento = dataNascimento;
 		this.telefone = telefone;
 	}
