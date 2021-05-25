@@ -12,8 +12,8 @@ public class Gestor extends Usuario{
 	public Gestor() {
 	}
 
-	public Gestor(String estabelecimento) {
-		super();
+	public Gestor(String nome, String email, String senha, String estabelecimento) {
+		super(nome, email, senha);
 		this.estabelecimento = estabelecimento;
 	}
 

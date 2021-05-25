@@ -23,7 +23,11 @@ public class UsuarioController {
 	
 	@PostMapping(value = "/signup")
 	public ResponseEntity<UsuarioDto> cadastrar(@RequestBody UsuarioForm usuario, UriComponentsBuilder uriBuilder) {
-		usuarioRepository.save(usuario.converterParaCliente());
+		if (usuarioRepository.count() == 0) {
+			usuarioRepository.save(usuario.converterParaGestor());
+		}else {
+			usuarioRepository.save(usuario.converterParaCliente());	
+		}
 		
 		URI uri = uriBuilder.path("/join/signup").build().toUri();
 		return ResponseEntity.created(uri).body(new UsuarioDto(usuario));

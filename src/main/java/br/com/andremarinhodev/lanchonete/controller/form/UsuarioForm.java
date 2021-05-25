@@ -3,6 +3,7 @@ package br.com.andremarinhodev.lanchonete.controller.form;
 import java.time.LocalDate;
 
 import br.com.andremarinhodev.lanchonete.model.Cliente;
+import br.com.andremarinhodev.lanchonete.model.Gestor;
 
 public class UsuarioForm {
 
@@ -52,5 +53,9 @@ public class UsuarioForm {
 	
 	public Cliente converterParaCliente() {
 		return new Cliente(nome, email, senha, dataNascimento, telefone);
+	}
+	
+	public Gestor converterParaGestor() {
+		return new Gestor(nome, email, senha, estabelecimento);
 	}
 }
