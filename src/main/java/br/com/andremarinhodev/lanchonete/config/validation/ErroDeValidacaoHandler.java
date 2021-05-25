@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import br.com.andremarinhodev.lanchonete.controller.exception.EmailAlreadyExistsException;
 import br.com.andremarinhodev.lanchonete.controller.exception.EmptyFieldException;
 
 @RestControllerAdvice
@@ -41,5 +42,11 @@ public class ErroDeValidacaoHandler {
 	@ExceptionHandler(EmptyFieldException.class)
 	public ErroDeFormularioDto handle(EmptyFieldException exception) {
 		return new ErroDeFormularioDto(exception.getMessage(), "não deve estar vazio");
+	}
+	
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(EmailAlreadyExistsException.class)
+	public ErroDeFormularioDto handle(EmailAlreadyExistsException exception) {
+		return new ErroDeFormularioDto(exception.getMessage(), "já existe no banco de dados");
 	}
 }
