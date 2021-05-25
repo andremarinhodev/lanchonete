@@ -15,13 +15,6 @@ public class UsuarioService {
 	
 	@Autowired
 	private UsuarioRepository repository;
-	
-	public boolean isEmpty() {
-		if (repository.count() == 0) {
-			return true;
-		}
-		return false;
-	}
 
 	public void salvarGestor(UsuarioForm usuario) {
 		verificaEmail(usuario);
@@ -33,11 +26,18 @@ public class UsuarioService {
 		repository.save(usuario.converterParaCliente());
 	}
 	
+	public boolean isEmpty() {
+		if (repository.count() == 0) {
+			return true;
+		}
+		return false;
+	}
+
 	private void verificaEmail(UsuarioForm form) {
 		Optional<Usuario> usuario = repository.findByEmail(form.getEmail());
 		if(usuario.isPresent()) {
 			throw new EmailAlreadyExistsException("Email: " + form.getEmail());
 		}
 	}
-
+	
 }

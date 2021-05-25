@@ -26,23 +26,23 @@ public class UsuarioController {
 	private UsuarioService service;
 	
 	@PostMapping(value = "/signup")
-	public ResponseEntity<UsuarioDto> cadastrar(@RequestBody @Valid UsuarioForm usuario, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<UsuarioDto> cadastrar(@RequestBody @Valid UsuarioForm form, UriComponentsBuilder uriBuilder) {
 		if (service.isEmpty()) {
-			if (Validator.isNullOrEmpty(usuario.getEstabelecimento())) {
+			if (Validator.isNullOrEmpty(form.getEstabelecimento())) {
 				throw new EmptyFieldException("estabelecimento");
 			}
-			service.salvarGestor(usuario);
+			service.salvarGestor(form);
 		}else {
-			if (Validator.isNullOrEmpty(usuario.getDataNascimento())) {
+			if (Validator.isNullOrEmpty(form.getDataNascimento())) {
 				throw new EmptyFieldException("data de nascimento");
-			} else if (Validator.isNullOrEmpty(usuario.getTelefone())) {
+			} else if (Validator.isNullOrEmpty(form.getTelefone())) {
 				throw new EmptyFieldException("telefone");
 			}
-			service.salvarCliente(usuario);
+			service.salvarCliente(form);
 		}
 		
 		URI uri = uriBuilder.path("/join/signup").build().toUri();
-		return ResponseEntity.created(uri).body(new UsuarioDto(usuario));
+		return ResponseEntity.created(uri).body(new UsuarioDto(form));
 	}
 	
 	
