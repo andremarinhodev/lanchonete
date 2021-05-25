@@ -5,8 +5,6 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.Length;
-
 import br.com.andremarinhodev.lanchonete.model.Cliente;
 import br.com.andremarinhodev.lanchonete.model.Gestor;
 
@@ -15,10 +13,10 @@ public class UsuarioForm {
 	@NotNull @NotEmpty
 	private String nome;
 	
-	@NotNull @NotEmpty @Length(min = 5)
+	@NotNull @NotEmpty 
 	private String email;
 	
-	@NotNull @NotEmpty @Length(min = 5)
+	@NotNull @NotEmpty 
 	private String senha;
 	private String estabelecimento;
 	private LocalDate dataNascimento;
