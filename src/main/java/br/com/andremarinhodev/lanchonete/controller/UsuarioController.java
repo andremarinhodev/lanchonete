@@ -2,6 +2,8 @@ package br.com.andremarinhodev.lanchonete.controller;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,21 +14,21 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.andremarinhodev.lanchonete.controller.dto.UsuarioDto;
 import br.com.andremarinhodev.lanchonete.controller.form.UsuarioForm;
-import br.com.andremarinhodev.lanchonete.repository.UsuarioRepository;
+import br.com.andremarinhodev.lanchonete.service.UsuarioService;
 
 @RestController
 @RequestMapping("/join")
 public class UsuarioController {
 
 	@Autowired
-	private UsuarioRepository usuarioRepository;
+	private UsuarioService service;
 	
 	@PostMapping(value = "/signup")
-	public ResponseEntity<UsuarioDto> cadastrar(@RequestBody UsuarioForm usuario, UriComponentsBuilder uriBuilder) {
-		if (usuarioRepository.count() == 0) {
-			usuarioRepository.save(usuario.converterParaGestor());
+	public ResponseEntity<UsuarioDto> cadastrar(@RequestBody @Valid UsuarioForm usuario, UriComponentsBuilder uriBuilder) {
+		if (service.isEmpty()) {
+			service.salvarGestor(usuario);
 		}else {
-			usuarioRepository.save(usuario.converterParaCliente());	
+			service.salvarCliente(usuario);
 		}
 		
 		URI uri = uriBuilder.path("/join/signup").build().toUri();
