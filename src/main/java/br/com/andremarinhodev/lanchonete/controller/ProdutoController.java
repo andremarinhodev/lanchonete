@@ -39,6 +39,7 @@ public class ProdutoController {
 	}
 	
 	@PostMapping
+	@Transactional
 	public ResponseEntity<ProdutoDto> cadastrar(@RequestBody @Valid ProdutoForm form, UriComponentsBuilder uriBuilder) {
 		Produto produto = form.converter();
 		service.save(produto);
@@ -46,10 +47,19 @@ public class ProdutoController {
 		return ResponseEntity.created(uri).body(new ProdutoDto(produto));
 	}
 	
+	@GetMapping("/{id}")
+	public ResponseEntity<ProdutoDto> detalhar(@PathVariable Long id) {		
+		if (service.findById(id)) {
+			return ResponseEntity.ok(new ProdutoDto(service.getById(id)));
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
 	@PutMapping("/{id}")
 	@Transactional
 	public ResponseEntity<ProdutoDto> atualizar(@PathVariable Long id, @RequestBody @Valid ProdutoForm form) {
-		if (service.atualizarProduto(id, form)) {
+		if (service.findById(id)) {
+			service.atualizarProduto(id, form);
 			return ResponseEntity.ok(new ProdutoDto(id, form));
 		}
 		return ResponseEntity.notFound().build();

@@ -25,10 +25,17 @@ public class ProdutoService {
 		repository.save(produto);
 	}
 
-	public boolean atualizarProduto(Long id, ProdutoForm form) {
+	public void atualizarProduto(Long id, ProdutoForm form) {
+		form.atualizar(repository.getById(id));
+	}
+
+	public Produto getById(Long id) {
+		return repository.getById(id);
+	}
+	
+	public boolean findById(Long id) {
 		Optional<Produto> optional = repository.findById(id);
 		if (optional.isPresent()) {
-			form.atualizar(repository.getById(id));
 			return true;
 		}
 		return false;
