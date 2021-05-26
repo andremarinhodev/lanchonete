@@ -28,7 +28,7 @@ public class ProdutoService {
 	}
 
 	public void atualizarProduto(Long id, ProdutoForm form) {
-		form.atualizar(repository.getById(id));
+		form.atualizar(repository.findById(id).get());
 	}
 
 	public Produto getById(Long id) {

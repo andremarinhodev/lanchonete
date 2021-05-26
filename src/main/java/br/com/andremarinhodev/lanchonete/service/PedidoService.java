@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import br.com.andremarinhodev.lanchonete.controller.form.AtualizacaoPedidoForm;
 import br.com.andremarinhodev.lanchonete.controller.form.PedidoForm;
 import br.com.andremarinhodev.lanchonete.model.Pedido;
 import br.com.andremarinhodev.lanchonete.repository.ItemPedidoRepository;
@@ -56,6 +57,18 @@ public class PedidoService {
 			}
 		}
 		return false;
+	}
+
+	public boolean verificarId(Long idPedido) {
+		Optional<Pedido> optional = pedidoRepository.findById(idPedido);
+		if (optional.isPresent()) {
+			return true;
+		}
+		return false;
+	}
+
+	public void atualizarPedido(Long idPedido, AtualizacaoPedidoForm form) {
+		form.atualizar(pedidoRepository.findById(idPedido).get());
 	}
 
 }

@@ -5,7 +5,7 @@ public enum StatusPedido {
 	AGUARDANDO_ACEITACAO,
 	ACEITO,
 	EM_PREPARO,
-	PRONTO,
+	FINALIZADO,
 	CANCELADO;
 	
 }
