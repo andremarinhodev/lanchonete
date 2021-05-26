@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 
 import br.com.andremarinhodev.lanchonete.model.ItemPedido;
 import br.com.andremarinhodev.lanchonete.model.Pedido;
-import br.com.andremarinhodev.lanchonete.model.Produto;
 import br.com.andremarinhodev.lanchonete.model.Usuario;
 import br.com.andremarinhodev.lanchonete.model.enums.StatusPedido;
 

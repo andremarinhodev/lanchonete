@@ -38,4 +38,8 @@ public class PedidoService {
 		return pedidoRepository.findAll(paginacao);
 	}
 
+	public Page<Pedido> findAllById(Long id, Pageable paginacao) {
+		return pedidoRepository.findByClienteId(id, paginacao);
+	}
+
 }
