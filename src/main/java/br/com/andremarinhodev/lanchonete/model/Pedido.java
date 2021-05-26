@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import br.com.andremarinhodev.lanchonete.model.enums.StatusPedido;
+
 @Entity
 public class Pedido {
 
@@ -20,6 +22,7 @@ public class Pedido {
 	private Long id;
 	private BigDecimal valorTotal;
 	private LocalDate data = LocalDate.now();
+	private StatusPedido status = StatusPedido.AGUARDANDO_ACEITACAO;
 	
 	@ManyToOne
 	private Usuario cliente;
@@ -56,14 +59,6 @@ public class Pedido {
 		this.valorTotal = valorTotal;
 	}
 
-	public void calculaValorTotal() {
-		BigDecimal valor = BigDecimal.ZERO;
-		for(ItemPedido i : itens) {
-			valor = valor.add(i.getPrecoUnitario());
-		}
-		this.valorTotal = valor;
-	}
-
 	public LocalDate getData() {
 		return data;
 	}
@@ -83,5 +78,21 @@ public class Pedido {
 	public List<ItemPedido> getItens() {
 		return itens;
 	}
-	
+
+	public StatusPedido getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusPedido status) {
+		this.status = status;
+	}
+
+	public void calculaValorTotal() {
+		BigDecimal valor = BigDecimal.ZERO;
+		for(ItemPedido i : itens) {
+			valor = valor.add(i.getPrecoUnitario());
+		}
+		this.valorTotal = valor;
+	}
+
 }

@@ -4,24 +4,25 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import br.com.andremarinhodev.lanchonete.model.Cliente;
 import br.com.andremarinhodev.lanchonete.model.ItemPedido;
 import br.com.andremarinhodev.lanchonete.model.Pedido;
 import br.com.andremarinhodev.lanchonete.model.Usuario;
+import br.com.andremarinhodev.lanchonete.model.enums.StatusPedido;
 
 public class PedidoDto {
 
 	private Long idPedido;
 	private BigDecimal valorTotal;
 	private LocalDate data;
+	private StatusPedido status;
 	private Usuario cliente;
 	private List<ItemPedido> itens;
 	
 	public PedidoDto(Pedido pedido) {
-		super();
 		this.idPedido = pedido.getId();
 		this.valorTotal = pedido.getValorTotal();
 		this.data = pedido.getData();
+		this.status = pedido.getStatus();
 		this.cliente = pedido.getCliente();
 		this.itens = pedido.getItens();
 	}
@@ -54,7 +55,7 @@ public class PedidoDto {
 		return cliente;
 	}
 
-	public void setCliente(Cliente cliente) {
+	public void setCliente(Usuario cliente) {
 		this.cliente = cliente;
 	}
 
@@ -64,6 +65,14 @@ public class PedidoDto {
 
 	public void setItens(List<ItemPedido> itens) {
 		this.itens = itens;
+	}
+
+	public StatusPedido getStatus() {
+		return status;
+	}
+
+	public void setStatus(StatusPedido status) {
+		this.status = status;
 	}
 	
 }
