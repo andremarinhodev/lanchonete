@@ -95,6 +95,9 @@ public abstract class Usuario {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
-	
+
+	public List<Perfil> getPerfis() {
+		return perfis;
+	}
 	
 }

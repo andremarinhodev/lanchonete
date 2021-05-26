@@ -39,7 +39,7 @@ public class PedidoController {
 		return PedidoDto.converter(pedidos);
 	}
 
-	@PostMapping("/novoPedido")
+	@PostMapping("/novo-pedido")
 	@Transactional
 	public ResponseEntity<PedidoDto> novoPedido(@RequestBody @Valid PedidoForm form, UriComponentsBuilder uriBuilder) {
 		Pedido pedido = service.save(form);

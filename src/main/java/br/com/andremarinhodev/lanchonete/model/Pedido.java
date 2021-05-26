@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,6 +24,8 @@ public class Pedido {
 	private Long id;
 	private BigDecimal valorTotal;
 	private LocalDate data = LocalDate.now();
+	
+	@Enumerated(EnumType.STRING)
 	private StatusPedido status = StatusPedido.AGUARDANDO_ACEITACAO;
 	
 	@ManyToOne

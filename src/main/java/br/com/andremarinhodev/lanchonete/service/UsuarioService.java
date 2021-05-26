@@ -6,35 +6,48 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.andremarinhodev.lanchonete.controller.exception.EmailAlreadyExistsException;
-import br.com.andremarinhodev.lanchonete.controller.form.UsuarioForm;
+import br.com.andremarinhodev.lanchonete.controller.form.ClienteForm;
+import br.com.andremarinhodev.lanchonete.controller.form.GestorForm;
 import br.com.andremarinhodev.lanchonete.model.Usuario;
+import br.com.andremarinhodev.lanchonete.repository.PerfilRepository;
 import br.com.andremarinhodev.lanchonete.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
 	
 	@Autowired
-	private UsuarioRepository repository;
+	private UsuarioRepository usuarioRepository;
 	
-	public void salvarGestor(UsuarioForm usuario) {
-		verificaEmail(usuario);
-		repository.save(usuario.converterParaGestor());
+	@Autowired
+	private PerfilRepository perfilRepository;
+	
+	public void salvarGestor(GestorForm gestor) {
+		verificaEmail(gestor);
+		usuarioRepository.save(gestor.converter(perfilRepository));
 	}
 
-	public void salvarCliente(UsuarioForm usuario) {
-		verificaEmail(usuario);
-		repository.save(usuario.converterParaCliente());
+	public void salvarCliente(ClienteForm cliente) {
+		verificaEmail(cliente);
+		usuarioRepository.save(cliente.converter(perfilRepository));
 	}
 	
-	public boolean isEmpty() {
-		if (repository.count() == 0) {
+	public boolean contemGestor() {
+		Optional<Usuario> optional = usuarioRepository.findByPerfisNome("ROLE_GESTOR");
+		if (optional.isPresent()) {
 			return true;
 		}
 		return false;
 	}
 
-	private void verificaEmail(UsuarioForm form) {
-		Optional<Usuario> usuario = repository.findByEmail(form.getEmail());
+	private void verificaEmail(GestorForm form) {
+		Optional<Usuario> usuario = usuarioRepository.findByEmail(form.getEmail());
+		if(usuario.isPresent()) {
+			throw new EmailAlreadyExistsException("Email: " + form.getEmail());
+		}
+	}
+	
+	private void verificaEmail(ClienteForm form) {
+		Optional<Usuario> usuario = usuarioRepository.findByEmail(form.getEmail());
 		if(usuario.isPresent()) {
 			throw new EmailAlreadyExistsException("Email: " + form.getEmail());
 		}

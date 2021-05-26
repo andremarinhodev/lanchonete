@@ -2,6 +2,7 @@ package br.com.andremarinhodev.lanchonete.controller;
 
 import java.net.URI;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,38 +13,39 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.andremarinhodev.lanchonete.controller.dto.UsuarioDto;
-import br.com.andremarinhodev.lanchonete.controller.exception.EmptyFieldException;
-import br.com.andremarinhodev.lanchonete.controller.form.UsuarioForm;
+import br.com.andremarinhodev.lanchonete.controller.dto.ClienteDto;
+import br.com.andremarinhodev.lanchonete.controller.dto.GestorDto;
+import br.com.andremarinhodev.lanchonete.controller.form.ClienteForm;
+import br.com.andremarinhodev.lanchonete.controller.form.GestorForm;
 import br.com.andremarinhodev.lanchonete.service.UsuarioService;
-import br.com.andremarinhodev.lanchonete.util.Validator;
 
 @RestController
-@RequestMapping("/join")
+@RequestMapping("/login")
 public class UsuarioController {
 
 	@Autowired
 	private UsuarioService service;
 	
-	@PostMapping(value = "/signup")
-	public ResponseEntity<UsuarioDto> cadastrar(@RequestBody @Valid UsuarioForm form, UriComponentsBuilder uriBuilder) {
-		if (service.isEmpty()) {
-			if (Validator.isNullOrEmpty(form.getEstabelecimento())) {
-				throw new EmptyFieldException("estabelecimento");
-			}
-			service.salvarGestor(form);
-		}else {
-			if (Validator.isNullOrEmpty(form.getDataNascimento())) {
-				throw new EmptyFieldException("data de nascimento");
-			} else if (Validator.isNullOrEmpty(form.getTelefone())) {
-				throw new EmptyFieldException("telefone");
-			}
-			service.salvarCliente(form);
+	@PostMapping(value = "/cadastrar-gestor")
+	@Transactional
+	public ResponseEntity<GestorDto> cadastrarGestor(@RequestBody @Valid GestorForm form, UriComponentsBuilder uriBuilder) {
+		if (service.contemGestor()) {
+			return ResponseEntity.badRequest().body(new GestorDto(form, "Já há um gestor cadastrado no sistema"));
 		}
-		
-		URI uri = uriBuilder.path("/join/signup").build().toUri();
-		return ResponseEntity.created(uri).body(new UsuarioDto(form));
+		service.salvarGestor(form);
+		URI uri = uriBuilder.path("/login/cadastro-gestor").build().toUri();
+		return ResponseEntity.created(uri).body(new GestorDto(form, "Gestor cadastrado com sucesso"));
 	}
 	
+	@PostMapping(value = "/cadastrar-cliente")
+	@Transactional
+	public ResponseEntity<ClienteDto> cadastrarCliente(@RequestBody @Valid ClienteForm form, UriComponentsBuilder uriBuilder) {
+		if (!service.contemGestor()) {
+			return ResponseEntity.badRequest().body(new ClienteDto(form, "Ainda não há gestor cadastrado no sistema"));
+		}
+		service.salvarCliente(form);
+		URI uri = uriBuilder.path("/join/signup").build().toUri();
+		return ResponseEntity.created(uri).body(new ClienteDto(form, "Cliente cadastrado com sucesso"));
+	}
 	
 }

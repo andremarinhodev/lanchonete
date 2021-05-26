@@ -4,8 +4,8 @@ import br.com.andremarinhodev.lanchonete.controller.form.UsuarioForm;
 
 public class UsuarioDto {
 	
-	public String nome;
-	public String email;
+	private String nome;
+	private String email;
 	
 	
 	public UsuarioDto(UsuarioForm form) {

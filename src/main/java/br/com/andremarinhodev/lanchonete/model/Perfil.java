@@ -8,10 +8,19 @@ import javax.persistence.Id;
 @Entity
 public class Perfil {
 
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String nome;
+
+	public Perfil() {
+	}
+
+	public Perfil(String nome) {
+		super();
+		this.nome = nome;
+	}
 
 	public Long getId() {
 		return id;
@@ -29,5 +38,4 @@ public class Perfil {
 		this.nome = nome;
 	}
 
-	
 }
