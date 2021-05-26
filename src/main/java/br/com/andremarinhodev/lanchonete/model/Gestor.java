@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 @DiscriminatorValue("1")
 public class Gestor extends Usuario{
 	
+	private static final long serialVersionUID = 1L;
+
 	private String estabelecimento;
 	
 	public Gestor() {

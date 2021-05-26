@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 @DiscriminatorValue("2")
 public class Cliente extends Usuario{
 	
+	private static final long serialVersionUID = 1L;
+	
 	private LocalDate dataNascimento;
 	private String telefone;
 

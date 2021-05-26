@@ -94,18 +94,18 @@ public class PedidoController {
 	
 	@PutMapping("/cancelar/{idPedido}")
 	@Transactional
-	public ResponseEntity<PedidoDto> cancelarPedidoCliente(@PathVariable Long idPedido, @RequestBody AtualizacaoPedidoForm form, HttpServletRequest request) {
+	public ResponseEntity<PedidoDto> cancelarPedidoCliente(@PathVariable Long idPedido, HttpServletRequest request) {
 		String token = recuperarToken(request);
 		Long idUsuario = tokenService.getIdUsuario(token);
 		if (usuarioService.isGestor(idUsuario)) {
 			if (pedidoService.verificarId(idPedido)) {
-				pedidoService.atualizarPedido(idPedido, form);
+				pedidoService.cancelarPedido(idPedido);
 				return ResponseEntity.ok(new PedidoDto(pedidoService.getById(idPedido)));
 			}
 			return ResponseEntity.notFound().build();
 		} else if (pedidoService.verificarId(idUsuario, idPedido)) {
 			if (pedidoService.verificarStatus(idUsuario, idPedido)) {
-				pedidoService.atualizarPedido(idPedido, form);
+				pedidoService.cancelarPedido(idPedido);
 				return ResponseEntity.ok(new PedidoDto(pedidoService.getById(idPedido)));
 			}
 			return ResponseEntity.badRequest().build();

@@ -81,4 +81,9 @@ public class PedidoService {
 		return false;
 	}
 
+	public void cancelarPedido(Long idPedido) {
+		Pedido pedido = pedidoRepository.findById(idPedido).get();
+		pedido.setStatus(StatusPedido.CANCELADO);
+	}
+
 }
