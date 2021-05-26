@@ -1,5 +1,7 @@
 package br.com.andremarinhodev.lanchonete.service;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,6 +42,20 @@ public class PedidoService {
 
 	public Page<Pedido> findAllById(Long id, Pageable paginacao) {
 		return pedidoRepository.findByClienteId(id, paginacao);
+	}
+
+	public Pedido getById(Long idPedido) {
+		return pedidoRepository.findById(idPedido).get();
+	}
+
+	public boolean verificarId(Long idCliente, Long idPedido) {
+		Optional<Pedido> optional = pedidoRepository.findById(idPedido);
+		if (optional.isPresent()) {
+			if (optional.get().getCliente().getId().equals(idCliente)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }

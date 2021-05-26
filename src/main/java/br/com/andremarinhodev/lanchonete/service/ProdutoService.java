@@ -32,7 +32,7 @@ public class ProdutoService {
 	}
 
 	public Produto getById(Long id) {
-		return repository.getById(id);
+		return repository.findById(id).get();
 	}
 	
 	public boolean findById(Long id) {

@@ -45,10 +45,18 @@ public class PedidoController {
 		return ResponseEntity.created(uri).body(new PedidoDto(pedido));
 	}
 	
-	@GetMapping("/{id}")
-	public Page<PedidoDto> listarPorUsuario(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao, @PathVariable Long id){
-		Page<Pedido> pedidos = service.findAllById(id, paginacao);
+	@GetMapping("/{idCliente}")
+	public Page<PedidoDto> listarPorCliente(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao, @PathVariable Long idCliente){
+		Page<Pedido> pedidos = service.findAllById(idCliente, paginacao);
 		return PedidoDto.converter(pedidos);
+	}
+	
+	@GetMapping("/{idCliente}/{idPedido}")
+	public ResponseEntity<PedidoDto> detalhar(@PathVariable Long idCliente, @PathVariable Long idPedido) {		
+		if (service.verificarId(idCliente, idPedido)) {
+			return ResponseEntity.ok(new PedidoDto(service.getById(idPedido)));
+		}
+		return ResponseEntity.notFound().build();
 	}
 }
 
