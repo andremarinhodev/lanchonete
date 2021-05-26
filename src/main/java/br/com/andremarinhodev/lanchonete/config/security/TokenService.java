@@ -14,10 +14,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Service
 public class TokenService {
 	
-	@Value("${forum.jwt.expiration}")
+	@Value("${lanchonete.jwt.expiration}")
 	private String expiration;
 	
-	@Value("${forum.jwt.secret}")
+	@Value("${lanchonete.jwt.secret}")
 	private String secret;
 
 	public String gerarToken(Authentication authentication) {
