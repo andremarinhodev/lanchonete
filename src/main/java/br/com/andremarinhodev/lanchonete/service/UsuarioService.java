@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import br.com.andremarinhodev.lanchonete.controller.exception.EmailAlreadyExistsException;
 import br.com.andremarinhodev.lanchonete.controller.form.ClienteForm;
 import br.com.andremarinhodev.lanchonete.controller.form.GestorForm;
+import br.com.andremarinhodev.lanchonete.model.Perfil;
 import br.com.andremarinhodev.lanchonete.model.Usuario;
 import br.com.andremarinhodev.lanchonete.repository.PerfilRepository;
 import br.com.andremarinhodev.lanchonete.repository.UsuarioRepository;
@@ -51,6 +52,15 @@ public class UsuarioService {
 		if(usuario.isPresent()) {
 			throw new EmailAlreadyExistsException("Email: " + form.getEmail());
 		}
+	}
+
+	public boolean isGestor(Long id) {
+		for(Perfil p: usuarioRepository.findById(id).get().getPerfis()) {
+			if (p.getNome().equals("ROLE_GESTOR")) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 }

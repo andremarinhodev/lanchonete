@@ -3,6 +3,7 @@ package br.com.andremarinhodev.lanchonete.config.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -46,9 +47,13 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests()
 		.antMatchers("/login").permitAll()
 		.antMatchers("/cadastrar/*").permitAll()
-		.antMatchers("/h2-console/").permitAll()
-		.antMatchers("/h2-console/**").permitAll()
-		//.antMatchers(HttpMethod.POST, "/auth").permitAll()
+		.antMatchers(HttpMethod.POST, "/produtos").hasRole("GESTOR")
+		.antMatchers(HttpMethod.POST, "/produtos/").hasRole("GESTOR")
+		.antMatchers(HttpMethod.PUT, "/produtos/").hasRole("GESTOR")
+		.antMatchers(HttpMethod.DELETE, "/produtos/*").hasRole("GESTOR")
+		.antMatchers(HttpMethod.GET, "/pedidos").hasRole("GESTOR")
+		.antMatchers(HttpMethod.GET, "/pedidos/").hasRole("GESTOR")
+		.antMatchers(HttpMethod.PUT, "/pedidos/atualizar/*").hasRole("GESTOR")
 		.anyRequest().authenticated()
 		.and().csrf().disable()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
