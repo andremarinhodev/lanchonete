@@ -22,7 +22,7 @@ public class Pedido {
 	private LocalDate data = LocalDate.now();
 	
 	@ManyToOne
-	private Cliente cliente;
+	private Usuario cliente;
 	
 	@OneToMany(mappedBy = "pedido")
 	private List<ItemPedido> itens = new ArrayList<>();
@@ -30,7 +30,7 @@ public class Pedido {
 	public Pedido() {
 	}
 
-	public Pedido(Cliente cliente) {
+	public Pedido(Usuario cliente) {
 		super();
 		this.cliente = cliente;
 	}
@@ -56,6 +56,14 @@ public class Pedido {
 		this.valorTotal = valorTotal;
 	}
 
+	public void calculaValorTotal() {
+		BigDecimal valor = BigDecimal.ZERO;
+		for(ItemPedido i : itens) {
+			valor = valor.add(i.getPrecoUnitario());
+		}
+		this.valorTotal = valor;
+	}
+
 	public LocalDate getData() {
 		return data;
 	}
@@ -64,12 +72,16 @@ public class Pedido {
 		this.data = data;
 	}
 
-	public Cliente getCliente() {
+	public Usuario getCliente() {
 		return cliente;
 	}
 
-	public void setCliente(Cliente cliente) {
+	public void setCliente(Usuario cliente) {
 		this.cliente = cliente;
+	}
+
+	public List<ItemPedido> getItens() {
+		return itens;
 	}
 	
 }

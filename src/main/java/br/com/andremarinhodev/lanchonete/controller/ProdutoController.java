@@ -42,9 +42,8 @@ public class ProdutoController {
 	@PostMapping
 	@Transactional
 	public ResponseEntity<ProdutoDto> cadastrar(@RequestBody @Valid ProdutoForm form, UriComponentsBuilder uriBuilder) {
-		Produto produto = form.converter();
-		service.save(produto);
-		URI uri = uriBuilder.path("/topicos/{id}").buildAndExpand(produto.getId()).toUri();
+		Produto produto = service.save(form);
+		URI uri = uriBuilder.path("/produtos/{id}").buildAndExpand(produto.getId()).toUri();
 		return ResponseEntity.created(uri).body(new ProdutoDto(produto));
 	}
 	

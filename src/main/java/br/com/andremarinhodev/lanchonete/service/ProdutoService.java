@@ -21,8 +21,10 @@ public class ProdutoService {
 		return repository.findAll(paginacao);
 	}
 
-	public void save(Produto produto) {
+	public Produto save(ProdutoForm form) {
+		Produto produto = form.converter();
 		repository.save(produto);
+		return produto;
 	}
 
 	public void atualizarProduto(Long id, ProdutoForm form) {

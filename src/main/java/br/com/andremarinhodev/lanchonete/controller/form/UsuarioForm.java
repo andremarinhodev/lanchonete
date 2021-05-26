@@ -21,7 +21,7 @@ public class UsuarioForm {
 	private String estabelecimento;
 	private LocalDate dataNascimento;
 	private String telefone;
-	
+
 	public String getNome() {
 		return nome;
 	}

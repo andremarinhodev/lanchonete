@@ -15,7 +15,7 @@ public class UsuarioService {
 	
 	@Autowired
 	private UsuarioRepository repository;
-
+	
 	public void salvarGestor(UsuarioForm usuario) {
 		verificaEmail(usuario);
 		repository.save(usuario.converterParaGestor());
