@@ -5,6 +5,8 @@ import java.util.Optional;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import br.com.andremarinhodev.lanchonete.model.Gestor;
 import br.com.andremarinhodev.lanchonete.model.Perfil;
 import br.com.andremarinhodev.lanchonete.repository.PerfilRepository;
@@ -70,7 +72,7 @@ public class GestorForm {
 	}
 
 	public Gestor converter(PerfilRepository perfilRepository) {
-		Gestor gestor = new Gestor(nome, email, senha, estabelecimento);
+		Gestor gestor = new Gestor(nome, email, new BCryptPasswordEncoder().encode(senha), estabelecimento);
 		Optional<Perfil> optional = perfilRepository.findByNome(perfil.getNome());
 		if (!optional.isPresent()) {
 			perfilRepository.save(perfil);

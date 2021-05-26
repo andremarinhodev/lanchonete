@@ -20,13 +20,13 @@ import br.com.andremarinhodev.lanchonete.controller.form.GestorForm;
 import br.com.andremarinhodev.lanchonete.service.UsuarioService;
 
 @RestController
-@RequestMapping("/login")
+@RequestMapping("/cadastrar/")
 public class UsuarioController {
 
 	@Autowired
 	private UsuarioService service;
 	
-	@PostMapping(value = "/cadastrar-gestor")
+	@PostMapping(value = "/gestor")
 	@Transactional
 	public ResponseEntity<GestorDto> cadastrarGestor(@RequestBody @Valid GestorForm form, UriComponentsBuilder uriBuilder) {
 		if (service.contemGestor()) {
@@ -37,7 +37,7 @@ public class UsuarioController {
 		return ResponseEntity.created(uri).body(new GestorDto(form, "Gestor cadastrado com sucesso"));
 	}
 	
-	@PostMapping(value = "/cadastrar-cliente")
+	@PostMapping(value = "/cliente")
 	@Transactional
 	public ResponseEntity<ClienteDto> cadastrarCliente(@RequestBody @Valid ClienteForm form, UriComponentsBuilder uriBuilder) {
 		if (!service.contemGestor()) {

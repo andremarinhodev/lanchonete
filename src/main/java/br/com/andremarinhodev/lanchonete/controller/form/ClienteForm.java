@@ -6,6 +6,8 @@ import java.util.Optional;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import br.com.andremarinhodev.lanchonete.model.Cliente;
 import br.com.andremarinhodev.lanchonete.model.Perfil;
 import br.com.andremarinhodev.lanchonete.repository.PerfilRepository;
@@ -82,7 +84,7 @@ public class ClienteForm {
 	}
 
 	public Cliente converter(PerfilRepository perfilRepository) {
-		Cliente cliente = new Cliente(nome, email, senha, dataNascimento, telefone);
+		Cliente cliente = new Cliente(nome, email, new BCryptPasswordEncoder().encode(senha), dataNascimento, telefone);
 		Optional<Perfil> optional = perfilRepository.findByNome(perfil.getNome());
 		if (!optional.isPresent()) {
 			perfilRepository.save(perfil);
