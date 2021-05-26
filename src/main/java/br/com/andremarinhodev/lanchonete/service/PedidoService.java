@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import br.com.andremarinhodev.lanchonete.controller.form.AtualizacaoPedidoForm;
 import br.com.andremarinhodev.lanchonete.controller.form.PedidoForm;
 import br.com.andremarinhodev.lanchonete.model.Pedido;
+import br.com.andremarinhodev.lanchonete.model.enums.StatusPedido;
 import br.com.andremarinhodev.lanchonete.repository.ItemPedidoRepository;
 import br.com.andremarinhodev.lanchonete.repository.PedidoRepository;
 import br.com.andremarinhodev.lanchonete.repository.ProdutoRepository;
@@ -69,6 +70,15 @@ public class PedidoService {
 
 	public void atualizarPedido(Long idPedido, AtualizacaoPedidoForm form) {
 		form.atualizar(pedidoRepository.findById(idPedido).get());
+	}
+
+	public boolean verificarStatus(Long idCliente, Long idPedido) {
+		Optional<Pedido> optional = pedidoRepository.findById(idPedido);
+		if (optional.get().getStatus().equals(StatusPedido.AGUARDANDO_ACEITACAO) 
+				|| optional.get().getStatus().equals(StatusPedido.ACEITO)) {
+			return true;
+		}
+		return false;
 	}
 
 }

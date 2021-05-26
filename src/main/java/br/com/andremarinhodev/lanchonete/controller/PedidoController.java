@@ -71,6 +71,18 @@ public class PedidoController {
 		return ResponseEntity.notFound().build();
 	}
 	
+	@PutMapping("/atualizar/{idCliente}/{idPedido}")
+	@Transactional
+	public ResponseEntity<PedidoDto> atualizarPorCliente(@PathVariable Long idPedido, @PathVariable Long idCliente, @RequestBody AtualizacaoPedidoForm form) {
+		if (service.verificarId(idCliente, idPedido)) {
+			if (service.verificarStatus(idCliente, idPedido)) {
+				service.atualizarPedido(idPedido, form);
+				return ResponseEntity.ok(new PedidoDto(service.getById(idPedido)));
+			}
+			return ResponseEntity.badRequest().build();
+		}
+		return ResponseEntity.notFound().build();
+	}
 }
 
 
