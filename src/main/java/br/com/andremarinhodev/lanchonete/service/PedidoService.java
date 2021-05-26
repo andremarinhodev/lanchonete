@@ -1,6 +1,8 @@
 package br.com.andremarinhodev.lanchonete.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.andremarinhodev.lanchonete.controller.form.PedidoForm;
@@ -30,6 +32,10 @@ public class PedidoService {
 		pedido.calculaValorTotal();
 		pedidoRepository.save(pedido);
 		return pedido;
+	}
+
+	public Page<Pedido> findAll(Pageable paginacao) {
+		return pedidoRepository.findAll(paginacao);
 	}
 
 }

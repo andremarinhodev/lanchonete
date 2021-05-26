@@ -4,8 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+
 import br.com.andremarinhodev.lanchonete.model.ItemPedido;
 import br.com.andremarinhodev.lanchonete.model.Pedido;
+import br.com.andremarinhodev.lanchonete.model.Produto;
 import br.com.andremarinhodev.lanchonete.model.Usuario;
 import br.com.andremarinhodev.lanchonete.model.enums.StatusPedido;
 
@@ -73,6 +76,10 @@ public class PedidoDto {
 
 	public void setStatus(StatusPedido status) {
 		this.status = status;
+	}
+
+	public static Page<PedidoDto> converter(Page<Pedido> pedidos) {
+		return pedidos.map(PedidoDto::new);
 	}
 	
 }
