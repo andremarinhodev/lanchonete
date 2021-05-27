@@ -5,8 +5,9 @@
 API Restfull de uma aplicação de gerenciamento de pedidos de uma lanchonete.
 
 ## Tecnologias utilizadas:
-	- Java Spring Boot; 
-	- JWT para autenticação/autorização;
+	- Java Spring Boot
+	- Sprint Data JPA; 
+	- Spring Security e JWT para autenticação/autorização;
 	- Banco de dados PostgreSQL e h2(apenas no profile dev com intuito de testar a aplicação);
 	- Senhas criptografadas no banco de dados utilizando BCrypt;
 	- API documentada utilizando Swagger2 com o auxílio do SpringFox
