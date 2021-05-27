@@ -22,7 +22,7 @@ public class Pedido {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private BigDecimal valorTotal;
+	private BigDecimal valorTotal = BigDecimal.ZERO;
 	private LocalDate data = LocalDate.now();
 	
 	@Enumerated(EnumType.STRING)
@@ -45,6 +45,7 @@ public class Pedido {
 	public void adicionarItem(ItemPedido item) {
 		item.setPedido(this);
 		this.itens.add(item);
+		this.valorTotal = valorTotal.add(item.getPrecoUnitario());
 	}
 	
 	public Long getId() {
@@ -89,14 +90,6 @@ public class Pedido {
 
 	public void setStatus(StatusPedido status) {
 		this.status = status;
-	}
-
-	public void calculaValorTotal() {
-		BigDecimal valor = BigDecimal.ZERO;
-		for(ItemPedido i : itens) {
-			valor = valor.add(i.getPrecoUnitario());
-		}
-		this.valorTotal = valor;
 	}
 
 }

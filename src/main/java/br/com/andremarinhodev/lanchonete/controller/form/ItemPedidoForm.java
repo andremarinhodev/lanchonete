@@ -28,6 +28,11 @@ public class ItemPedidoForm {
 
 	public ItemPedido converter(Pedido pedido, ProdutoRepository produtoRepository, ItemPedidoRepository itemPedidoRepository) {
 		ItemPedido itemPedido = new ItemPedido(quantidade, pedido, produtoRepository.findById(idProduto).get());
+		return itemPedido;
+	}
+	
+	public ItemPedido salvar(Pedido pedido, ProdutoRepository produtoRepository, ItemPedidoRepository itemPedidoRepository) {
+		ItemPedido itemPedido = new ItemPedido(quantidade, pedido, produtoRepository.findById(idProduto).get());
 		itemPedidoRepository.save(itemPedido);
 		return itemPedido;
 	}

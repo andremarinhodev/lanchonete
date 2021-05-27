@@ -2,7 +2,6 @@ package br.com.andremarinhodev.lanchonete.controller;
 
 import java.net.URI;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -22,27 +21,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.andremarinhodev.lanchonete.config.security.TokenService;
 import br.com.andremarinhodev.lanchonete.controller.dto.PedidoDto;
 import br.com.andremarinhodev.lanchonete.controller.form.AtualizacaoPedidoForm;
-import br.com.andremarinhodev.lanchonete.controller.form.PedidoForm;
+import br.com.andremarinhodev.lanchonete.controller.form.DevPedidoForm;
 import br.com.andremarinhodev.lanchonete.model.Pedido;
 import br.com.andremarinhodev.lanchonete.service.PedidoService;
-import br.com.andremarinhodev.lanchonete.service.UsuarioService;
 
 @RestController
 @RequestMapping(value = "/pedidos")
-@Profile("prod")
-public class PedidoController {
+@Profile("dev")
+public class DevPedidoController {
 	
 	@Autowired
 	private PedidoService pedidoService;
-	
-	@Autowired
-	private UsuarioService usuarioService;
-	
-	@Autowired
-	private TokenService tokenService;
 	
 	@GetMapping
 	public Page<PedidoDto> listar(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao){
@@ -52,34 +43,22 @@ public class PedidoController {
 
 	@PostMapping("/novo-pedido")
 	@Transactional
-	public ResponseEntity<PedidoDto> novoPedido(@RequestBody @Valid PedidoForm form, UriComponentsBuilder uriBuilder, HttpServletRequest request) {
-		String token = recuperarToken(request);
-		Pedido pedido = pedidoService.save(form, tokenService.getIdUsuario(token));
+	public ResponseEntity<PedidoDto> novoPedido(@RequestBody @Valid DevPedidoForm form, UriComponentsBuilder uriBuilder) {
+		Pedido pedido = pedidoService.save(form);
 		URI uri = uriBuilder.path("/pedidos/{id}").buildAndExpand(pedido.getId()).toUri();
 		return ResponseEntity.created(uri).body(new PedidoDto(pedido));
 	}
 	
 	@GetMapping("/{idUsuario}")
 	public Page<PedidoDto> listarPorCliente(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao
-			, @PathVariable Long idUsuario, HttpServletRequest request){
-		String token = recuperarToken(request);
-		if (usuarioService.isGestor(tokenService.getIdUsuario(token))) {
+			, @PathVariable Long idUsuario){
 			Page<Pedido> pedidos = pedidoService.findAllById(idUsuario, paginacao);
 			return PedidoDto.converter(pedidos);
-		} else if (idUsuario.equals(tokenService.getIdUsuario(token))) {
-			Page<Pedido> pedidos = pedidoService.findAllById(idUsuario, paginacao);
-			return PedidoDto.converter(pedidos);
-		}
-		return null;
 	}
 
 	@GetMapping("/detalhar/{idPedido}")
-	public ResponseEntity<PedidoDto> detalhar(@PathVariable Long idPedido, HttpServletRequest request) {		
-		String token = recuperarToken(request);
-		Long idUsuario = tokenService.getIdUsuario(token);
-		if (usuarioService.isGestor(idUsuario)) {
-			return ResponseEntity.ok(new PedidoDto(pedidoService.getById(idPedido)));
-		} else if (pedidoService.verificarId(idUsuario, idPedido)) {
+	public ResponseEntity<PedidoDto> detalhar(@PathVariable Long idPedido) {		
+		if (pedidoService.verificarId(idPedido)) {
 			return ResponseEntity.ok(new PedidoDto(pedidoService.getById(idPedido)));
 		}
 		return ResponseEntity.notFound().build();
@@ -97,27 +76,12 @@ public class PedidoController {
 	
 	@PutMapping("/cancelar/{idPedido}")
 	@Transactional
-	public ResponseEntity<PedidoDto> cancelarPedidoCliente(@PathVariable Long idPedido, HttpServletRequest request) {
-		String token = recuperarToken(request);
-		Long idUsuario = tokenService.getIdUsuario(token);
-		if (usuarioService.isGestor(idUsuario)) {
-			if (pedidoService.verificarId(idPedido)) {
-				pedidoService.cancelarPedido(idPedido);
-				return ResponseEntity.ok(new PedidoDto(pedidoService.getById(idPedido)));
-			}
-			return ResponseEntity.notFound().build();
-		} else if (pedidoService.verificarId(idUsuario, idPedido)) {
-			if (pedidoService.verificarStatus(idUsuario, idPedido)) {
-				pedidoService.cancelarPedido(idPedido);
-				return ResponseEntity.ok(new PedidoDto(pedidoService.getById(idPedido)));
-			}
-			return ResponseEntity.badRequest().build();
+	public ResponseEntity<PedidoDto> cancelarPedidoCliente(@PathVariable Long idPedido) {
+		if (pedidoService.verificarId(idPedido)) {
+			pedidoService.cancelarPedido(idPedido);
+			return ResponseEntity.ok(new PedidoDto(pedidoService.getById(idPedido)));
 		}
 		return ResponseEntity.notFound().build();
 	}
-	
-	private String recuperarToken(HttpServletRequest request) {
-		String token = request.getHeader("Authorization");
-		return token.substring(7, token.length());
-	}
+
 }

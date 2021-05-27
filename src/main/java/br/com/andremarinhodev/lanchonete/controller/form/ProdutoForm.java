@@ -10,12 +10,13 @@ import br.com.andremarinhodev.lanchonete.model.enums.Classificacao;
 
 public class ProdutoForm {
 
-	@NotNull @NotEmpty
+	@NotNull
+	@NotEmpty
 	private String nome;
-	
+
 	@NotNull
 	private BigDecimal preco;
-	
+
 	@NotNull
 	private Classificacao classificacao;
 

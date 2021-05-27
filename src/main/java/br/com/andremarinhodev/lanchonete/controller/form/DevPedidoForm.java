@@ -12,11 +12,22 @@ import br.com.andremarinhodev.lanchonete.model.Usuario;
 import br.com.andremarinhodev.lanchonete.repository.ItemPedidoRepository;
 import br.com.andremarinhodev.lanchonete.repository.ProdutoRepository;
 
-@Profile("prod")
-public class PedidoForm {
+@Profile("dev")
+public class DevPedidoForm {
 
 	@NotNull
+	private Long idCliente;
+	
+	@NotNull
 	private List<ItemPedidoForm> itens = new ArrayList<>();
+
+	public Long getIdCliente() {
+		return idCliente;
+	}
+
+	public void setIdCliente(Long idCliente) {
+		this.idCliente = idCliente;
+	}
 
 	public List<ItemPedidoForm> getItens() {
 		return itens;

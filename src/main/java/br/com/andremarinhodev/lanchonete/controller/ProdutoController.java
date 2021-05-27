@@ -34,7 +34,7 @@ public class ProdutoController {
 	private ProdutoService service;
 
 	@GetMapping
-	public Page<ProdutoDto> lista(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao){
+	public Page<ProdutoDto> listar(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao){
 		Page<Produto> produtos = service.findAll(paginacao);
 		return ProdutoDto.converter(produtos);
 	}

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.andremarinhodev.lanchonete.controller.form.AtualizacaoPedidoForm;
+import br.com.andremarinhodev.lanchonete.controller.form.DevPedidoForm;
 import br.com.andremarinhodev.lanchonete.controller.form.PedidoForm;
 import br.com.andremarinhodev.lanchonete.model.Pedido;
 import br.com.andremarinhodev.lanchonete.model.enums.StatusPedido;
@@ -31,11 +32,17 @@ public class PedidoService {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	
-	public Pedido save(PedidoForm form) {
+	public Pedido save(DevPedidoForm form) {
 		Pedido pedido = form.converter(usuarioRepository.findById(form.getIdCliente()).get(), produtoRepository, itemPedidoRepository);
-		pedido.calculaValorTotal();
+		//pedido.calculaValorTotal();
 		pedidoRepository.save(pedido);
 		return pedido;
+	}
+	
+	public Pedido save(PedidoForm form, Long id) {
+		Pedido pedido = form.converter(usuarioRepository.findById(id).get(), produtoRepository, itemPedidoRepository);
+		pedidoRepository.save(pedido);
+		return pedido;	
 	}
 
 	public Page<Pedido> findAll(Pageable paginacao) {

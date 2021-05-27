@@ -33,8 +33,6 @@ public class ClienteForm {
 	@NotEmpty
 	private String telefone;
 
-	private Perfil perfil = new Perfil("ROLE_CLIENTE");
-
 	public String getNome() {
 		return nome;
 	}
@@ -75,16 +73,9 @@ public class ClienteForm {
 		this.telefone = telefone;
 	}
 
-	public Perfil getPerfil() {
-		return perfil;
-	}
-
-	public void setPerfil(Perfil perfil) {
-		this.perfil = perfil;
-	}
-
 	public Cliente converter(PerfilRepository perfilRepository) {
 		Cliente cliente = new Cliente(nome, email, new BCryptPasswordEncoder().encode(senha), dataNascimento, telefone);
+		Perfil perfil = new Perfil("ROLE_CLIENTE");
 		Optional<Perfil> optional = perfilRepository.findByNome(perfil.getNome());
 		if (!optional.isPresent()) {
 			perfilRepository.save(perfil);

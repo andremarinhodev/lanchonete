@@ -29,8 +29,6 @@ public class GestorForm {
 	@NotEmpty
 	private String estabelecimento;
 
-	private Perfil perfil = new Perfil("ROLE_GESTOR");
-
 	public String getNome() {
 		return nome;
 	}
@@ -63,16 +61,9 @@ public class GestorForm {
 		this.estabelecimento = estabelecimento;
 	}
 
-	public Perfil getPerfil() {
-		return perfil;
-	}
-
-	public void setPerfil(Perfil perfil) {
-		this.perfil = perfil;
-	}
-
 	public Gestor converter(PerfilRepository perfilRepository) {
 		Gestor gestor = new Gestor(nome, email, new BCryptPasswordEncoder().encode(senha), estabelecimento);
+		Perfil perfil = new Perfil("ROLE_GESTOR");
 		Optional<Perfil> optional = perfilRepository.findByNome(perfil.getNome());
 		if (!optional.isPresent()) {
 			perfilRepository.save(perfil);
