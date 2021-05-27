@@ -44,13 +44,13 @@ public class PedidoController {
 	@Autowired
 	private TokenService tokenService;
 	
-	@GetMapping
-	public Page<PedidoDto> listar(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao){
+	@GetMapping("/todos")
+	public Page<PedidoDto> listarTodos(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao){
 		Page<Pedido> pedidos = pedidoService.findAll(paginacao);
 		return PedidoDto.converter(pedidos);
 	}
 
-	@PostMapping("/novo-pedido")
+	@PostMapping
 	@Transactional
 	public ResponseEntity<PedidoDto> novoPedido(@RequestBody @Valid PedidoForm form, UriComponentsBuilder uriBuilder, HttpServletRequest request) {
 		String token = recuperarToken(request);
@@ -59,21 +59,17 @@ public class PedidoController {
 		return ResponseEntity.created(uri).body(new PedidoDto(pedido));
 	}
 	
-	@GetMapping("/{idUsuario}")
+	@GetMapping
 	public Page<PedidoDto> listarPorCliente(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao
-			, @PathVariable Long idUsuario, HttpServletRequest request){
+			, HttpServletRequest request){
 		String token = recuperarToken(request);
-		if (usuarioService.isGestor(tokenService.getIdUsuario(token))) {
-			Page<Pedido> pedidos = pedidoService.findAllById(idUsuario, paginacao);
-			return PedidoDto.converter(pedidos);
-		} else if (idUsuario.equals(tokenService.getIdUsuario(token))) {
-			Page<Pedido> pedidos = pedidoService.findAllById(idUsuario, paginacao);
-			return PedidoDto.converter(pedidos);
-		}
-		return null;
+		Long idUsuario = tokenService.getIdUsuario(token);
+		Page<Pedido> pedidos = pedidoService.findAllById(idUsuario, paginacao);
+		return PedidoDto.converter(pedidos);
+
 	}
 
-	@GetMapping("/detalhar/{idPedido}")
+	@GetMapping("/{idPedido}")
 	public ResponseEntity<PedidoDto> detalhar(@PathVariable Long idPedido, HttpServletRequest request) {		
 		String token = recuperarToken(request);
 		Long idUsuario = tokenService.getIdUsuario(token);
