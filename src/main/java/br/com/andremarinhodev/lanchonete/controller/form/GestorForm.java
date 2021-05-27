@@ -62,7 +62,7 @@ public class GestorForm {
 	}
 
 	public Gestor converter(PerfilRepository perfilRepository) {
-		Gestor gestor = new Gestor(nome, email, new BCryptPasswordEncoder().encode(senha), estabelecimento);
+		Gestor gestor = new Gestor(nome, email.toLowerCase(), new BCryptPasswordEncoder().encode(senha), estabelecimento);
 		Perfil perfil = new Perfil("ROLE_GESTOR");
 		Optional<Perfil> optional = perfilRepository.findByNome(perfil.getNome());
 		if (!optional.isPresent()) {

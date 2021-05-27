@@ -41,14 +41,14 @@ public class UsuarioService {
 	}
 
 	private void verificaEmail(GestorForm form) {
-		Optional<Usuario> usuario = usuarioRepository.findByEmail(form.getEmail());
+		Optional<Usuario> usuario = usuarioRepository.findByEmail(form.getEmail().toLowerCase());
 		if(usuario.isPresent()) {
 			throw new EmailAlreadyExistsException("Email: " + form.getEmail());
 		}
 	}
 	
 	private void verificaEmail(ClienteForm form) {
-		Optional<Usuario> usuario = usuarioRepository.findByEmail(form.getEmail());
+		Optional<Usuario> usuario = usuarioRepository.findByEmail(form.getEmail().toLowerCase());
 		if(usuario.isPresent()) {
 			throw new EmailAlreadyExistsException("Email: " + form.getEmail());
 		}

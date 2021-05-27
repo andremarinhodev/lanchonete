@@ -18,7 +18,7 @@ public class ProdutoService {
 	private ProdutoRepository repository;
 
 	public Page<Produto> findAll(Pageable paginacao) {
-		return repository.findAll(paginacao);
+		return repository.findByIsActive(paginacao, true);
 	}
 
 	public Produto save(ProdutoForm form) {
@@ -29,6 +29,16 @@ public class ProdutoService {
 
 	public void atualizarProduto(Long id, ProdutoForm form) {
 		form.atualizar(repository.findById(id).get());
+	}
+	
+	public void ativarProduto(Long id) {
+		Produto produto = repository.findById(id).get();
+		produto.setActive(true);;
+	}
+	
+	public void desativarProduto(Long id) {
+		Produto produto = repository.findById(id).get();
+		produto.setActive(false);;
 	}
 
 	public Produto getById(Long id) {

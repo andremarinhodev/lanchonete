@@ -53,5 +53,5 @@ public class ProdutoForm {
 		produto.setPreco(preco);
 		produto.setClassificacao(classificacao);
 	}
-
+	
 }

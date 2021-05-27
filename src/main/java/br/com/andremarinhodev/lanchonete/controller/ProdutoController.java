@@ -11,7 +11,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -65,11 +64,21 @@ public class ProdutoController {
 		return ResponseEntity.notFound().build();
 	}
 	
-	@DeleteMapping("/{id}")
+	@PutMapping("/desativar/{id}")
 	@Transactional
-	public ResponseEntity<?> remover(@PathVariable Long id) {
+	public ResponseEntity<?> desativar(@PathVariable Long id) {
 		if (service.findById(id)) {
-			service.deleteById(id);
+			service.desativarProduto(id);
+			return ResponseEntity.ok().build();
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
+	@PutMapping("/ativar/{id}")
+	@Transactional
+	public ResponseEntity<?> ativar(@PathVariable Long id) {
+		if (service.findById(id)) {
+			service.ativarProduto(id);
 			return ResponseEntity.ok().build();
 		}
 		return ResponseEntity.notFound().build();

@@ -18,6 +18,7 @@ public class Produto {
 	private Long id;
 	private String nome;
 	private BigDecimal preco;
+	private boolean isActive = true;
 	
 	@Enumerated(EnumType.STRING)
 	private Classificacao classificacao;
@@ -87,6 +88,14 @@ public class Produto {
 
 	public void setClassificacao(Classificacao classificacao) {
 		this.classificacao = classificacao;
+	}
+
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 	
 }

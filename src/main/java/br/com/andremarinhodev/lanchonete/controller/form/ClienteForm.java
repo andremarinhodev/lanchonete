@@ -74,7 +74,7 @@ public class ClienteForm {
 	}
 
 	public Cliente converter(PerfilRepository perfilRepository) {
-		Cliente cliente = new Cliente(nome, email, new BCryptPasswordEncoder().encode(senha), dataNascimento, telefone);
+		Cliente cliente = new Cliente(nome, email.toLowerCase(), new BCryptPasswordEncoder().encode(senha), dataNascimento, telefone);
 		Perfil perfil = new Perfil("ROLE_CLIENTE");
 		Optional<Perfil> optional = perfilRepository.findByNome(perfil.getNome());
 		if (!optional.isPresent()) {
